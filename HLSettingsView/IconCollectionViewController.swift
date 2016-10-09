@@ -10,12 +10,20 @@ import UIKit
 
 private let reuseIdentifier = "IconCell"
 
-class IconCollectionViewController: UICollectionViewController {
-    
-    let images = ["Airplane", "Battery", "Cell", "Cloud", "Fingerprint", "Hand", "Lock", "Message", "Photos", "Shutdown", "Wi-Fi", "Battery", "Cell", "Cloud", "Fingerprint", "Hand", "Lock"]
-    
-    let options = ["Air Mode", "Battery", "Cellular", "iCloud", "Touch ID", "Privacy", "Password", "Mail", "Photos", "Turn Off", "Wi-Fi", "Battery", "Cellular", "iCloud", "Touch ID", "Privacy", "Password"]
+//input your own options
+let images = ["Airplane", "Battery", "Cell", "Cloud", "Fingerprint", "Hand", "Lock", "Message", "Photos", "Shutdown", "Wi-Fi", "Battery", "Cell", "Cloud", "Fingerprint", "Hand", "Lock"]
 
+let options = ["Air Mode", "Battery", "Cellular", "iCloud", "Touch ID", "Privacy", "Password", "Mail", "Photos", "Turn Off", "Wi-Fi", "Battery", "Cellular", "iCloud", "Touch ID", "Privacy", "Password"]
+
+
+class IconCollectionViewController: UICollectionViewController, UIPreviewInteractionDelegate {
+    
+    let sb = UIStoryboard(name: "Main", bundle: nil)
+    var optionVC = UIViewController()
+    var previewInteraction: UIPreviewInteraction!
+    
+    let blurView = UIVisualEffectView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,11 +31,15 @@ class IconCollectionViewController: UICollectionViewController {
         
         self.collectionView?.collectionViewLayout.invalidateLayout()
         self.collectionView?.setCollectionViewLayout(layout, animated: false)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Do any additional setup after loading the view.
+        
+        optionVC = sb.instantiateViewController(withIdentifier: "option")
+        
+        previewInteraction = UIPreviewInteraction(view: view)
+        previewInteraction.delegate = self
+        
+        blurView.frame = (view.bounds)
+        
+        view.insertSubview(blurView, at: 0)
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,10 +75,66 @@ class IconCollectionViewController: UICollectionViewController {
         
         cell.name = options[indexPath.row]
         cell.imageName = images[indexPath.row]
-    
-        // Configure the cell
-    
+        
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.parent!.performSegue(withIdentifier: "toDetail", sender: self)
+    }
+    
+    // MARK: Preview Interaction
+    func previewInteractionShouldBegin(_ previewInteraction: UIPreviewInteraction) -> Bool {
+        view!.bringSubview(toFront: blurView)
+        
+        let location = previewInteraction.location(in: collectionView!)
+        let path = self.collectionView?.indexPathForItem(at: location)
+        if let p = path{
+            let highlightedCell = self.collectionView!.cellForItem(at: p)
+            
+            //do something with the cell
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.blurView.effect = UIBlurEffect(style: .light)
+        }
+        
+        return true
+    }
+    
+    func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdatePreviewTransition transitionProgress: CGFloat, ended: Bool) {
+        if ended {
+            self.collectionView!.allowsSelection = false // prevent post selection
+            
+            optionVC.view.backgroundColor = UIColor.clear;
+            self.modalPresentationStyle = .currentContext
+            
+            optionVC.providesPresentationContextTransitionStyle = true
+            optionVC.definesPresentationContext = true
+            optionVC.modalPresentationStyle = .overCurrentContext
+                        
+            present(optionVC, animated: false, completion: nil)
+        }
+
+    }
+    
+    func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
+        UIView.animate(withDuration: 0.3) {
+            self.blurView.effect = nil
+        }
+        
+        view!.bringSubview(toFront: collectionView!)
+
+    }
+    
+    func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdateCommitTransition transitionProgress: CGFloat, ended: Bool) {
+        
+        if ended{
+            optionVC.dismiss(animated: false, completion: nil)
+            view!.bringSubview(toFront: collectionView!)
+
+            self.parent!.performSegue(withIdentifier: "toDetail", sender: self)
+        }
     }
 
     // MARK: UICollectionViewDelegate
