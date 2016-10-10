@@ -1,5 +1,5 @@
 # HLSettingsView
-A better way to manage user preferences on iOS
+A better way to manage user preferences in iOS
 
 *Author: Hollis Liu*
 
@@ -55,6 +55,7 @@ This is an ongoing project. Improvements may include:
 
 * better APIs
 * packaging using SPM
+* add unit tests
 * dynamic center point for the popup
 * sliding gestures when selecting key options
 * better animation
