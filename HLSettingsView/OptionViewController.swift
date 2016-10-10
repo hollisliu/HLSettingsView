@@ -8,6 +8,19 @@
 
 import UIKit
 
+enum buttonPostion {
+    case top
+    case left
+    case bottom
+    case right
+}
+
+protocol optionPopupDelegate {
+    func userDidSelectButton(postion: buttonPostion)
+    
+    func willDissmissPopup()
+}
+
 class OptionViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var buttonLeft: UIButton!
     @IBOutlet weak var buttonTop: UIButton!
@@ -19,6 +32,7 @@ class OptionViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var rightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    var delegate: optionPopupDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +61,7 @@ class OptionViewController: UIViewController, UIGestureRecognizerDelegate {
             }, completion: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         leftConstraint.constant = 5
         rightConstraint.constant = 5
         topConstraint.constant = 5
@@ -55,12 +69,28 @@ class OptionViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func handleTap(sender: UITapGestureRecognizer? = nil){
+        delegate?.willDissmissPopup()
+        
         self.dismiss(animated: false, completion: nil)
+    }
+    
+    
+    @IBAction func topButtonPressed(_ sender: AnyObject) {
+        delegate!.userDidSelectButton(postion: .top)
+    }
+    @IBAction func leftButtonPressed(_ sender: AnyObject) {
+        delegate?.userDidSelectButton(postion: .left)
+    }
+    @IBAction func bottomButtonPressed(_ sender: AnyObject) {
+        delegate?.userDidSelectButton(postion: .bottom)
+    }
+    @IBAction func rightButtonPressed(_ sender: AnyObject) {
+        delegate?.userDidSelectButton(postion: .right)
     }
     
     func setupButton(button: UIButton){
         button.backgroundColor = UIColor(colorLiteralRed: 0, green: 153/255, blue: 1, alpha: 1)
-        button.layer.cornerRadius = 30//buttonTop.bounds.height / 2
+        button.layer.cornerRadius = 40
         button.layer.shadowColor = UIColor.gray.cgColor
         button.layer.shadowOffset = CGSize(width: 0.5, height: 2.0)
         button.layer.shadowRadius = 2.0

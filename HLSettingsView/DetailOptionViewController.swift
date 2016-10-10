@@ -8,12 +8,12 @@
 
 import UIKit
 
-class DetailOptionViewController: UIViewController {
+class DetailOptionViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "detail"
+        self.title = "Detail"
         // Do any additional setup after loading the view.
     }
 

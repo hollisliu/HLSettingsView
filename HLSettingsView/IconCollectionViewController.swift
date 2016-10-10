@@ -16,10 +16,10 @@ let images = ["Airplane", "Battery", "Cell", "Cloud", "Fingerprint", "Hand", "Lo
 let options = ["Air Mode", "Battery", "Cellular", "iCloud", "Touch ID", "Privacy", "Password", "Mail", "Photos", "Turn Off", "Wi-Fi", "Battery", "Cellular", "iCloud", "Touch ID", "Privacy", "Password"]
 
 
-class IconCollectionViewController: UICollectionViewController, UIPreviewInteractionDelegate {
+class IconCollectionViewController: UICollectionViewController, UIPreviewInteractionDelegate, optionPopupDelegate {
     
     let sb = UIStoryboard(name: "Main", bundle: nil)
-    var optionVC = UIViewController()
+    var optionVC = OptionViewController()
     var previewInteraction: UIPreviewInteraction!
     
     let blurView = UIVisualEffectView()
@@ -32,7 +32,8 @@ class IconCollectionViewController: UICollectionViewController, UIPreviewInterac
         self.collectionView?.collectionViewLayout.invalidateLayout()
         self.collectionView?.setCollectionViewLayout(layout, animated: false)
         
-        optionVC = sb.instantiateViewController(withIdentifier: "option")
+        optionVC = sb.instantiateViewController(withIdentifier: "option") as! OptionViewController
+        optionVC.delegate = self
         
         previewInteraction = UIPreviewInteraction(view: view)
         previewInteraction.delegate = self
@@ -42,9 +43,26 @@ class IconCollectionViewController: UICollectionViewController, UIPreviewInterac
         view.insertSubview(blurView, at: 0)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // MARK: - Conigure Key Options
+    func userDidSelectButton(postion: buttonPostion) {
+        switch postion {
+        case .top:
+            print("top is pressed")
+            //Set NSUserDefault or else in here
+            
+        case .left:
+            print("left is pressed")
+            //Set NSUserDefault or else in here
+            
+        case .bottom:
+            print("bottom is pressed")
+            //Set NSUserDefault or else in here
+
+        case .right:
+            print("right is pressed")
+            //Set NSUserDefault or else in here
+
+        }
     }
 
     /*
@@ -90,7 +108,7 @@ class IconCollectionViewController: UICollectionViewController, UIPreviewInterac
         let location = previewInteraction.location(in: collectionView!)
         let path = self.collectionView?.indexPathForItem(at: location)
         if let p = path{
-            let highlightedCell = self.collectionView!.cellForItem(at: p)
+            _ = self.collectionView!.cellForItem(at: p)
             
             //do something with the cell
         }
@@ -103,6 +121,7 @@ class IconCollectionViewController: UICollectionViewController, UIPreviewInterac
     }
     
     func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdatePreviewTransition transitionProgress: CGFloat, ended: Bool) {
+        
         if ended {
             self.collectionView!.allowsSelection = false // prevent post selection
             
@@ -116,6 +135,14 @@ class IconCollectionViewController: UICollectionViewController, UIPreviewInterac
             present(optionVC, animated: false, completion: nil)
         }
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.collectionView!.allowsSelection = true // revert selection
+    }
+    
+    func willDissmissPopup() {
+        self.collectionView!.allowsSelection = true // revert selection
     }
     
     func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
