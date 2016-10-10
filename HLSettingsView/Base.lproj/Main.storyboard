@@ -158,7 +158,9 @@
                                     <constraint firstAttribute="height" constant="80" id="4lP-Gx-B25"/>
                                     <constraint firstAttribute="width" constant="80" id="jVe-aE-6f1"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Delete">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="leftButtonPressed:" destination="JM4-zO-vMs" eventType="touchUpInside" id="D9O-04-m1v"/>
                                 </connections>
@@ -168,7 +170,9 @@
                                     <constraint firstAttribute="height" constant="80" id="73J-Fn-2q8"/>
                                     <constraint firstAttribute="width" constant="80" id="Z4u-3i-OCH"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="rightButtonPressed:" destination="JM4-zO-vMs" eventType="touchUpInside" id="PWJ-ah-vtL"/>
                                 </connections>
@@ -179,7 +183,9 @@
                                     <constraint firstAttribute="height" constant="80" id="GQf-Ar-1Yt"/>
                                     <constraint firstAttribute="width" constant="80" id="gkU-Fh-gjg"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Setup">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="topButtonPressed:" destination="JM4-zO-vMs" eventType="touchUpInside" id="1jb-m6-a0X"/>
                                 </connections>
@@ -189,7 +195,9 @@
                                     <constraint firstAttribute="width" constant="80" id="0Fq-0a-8EA"/>
                                     <constraint firstAttribute="height" constant="80" id="scY-5m-WvQ"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Add">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="bottomButtonPressed:" destination="JM4-zO-vMs" eventType="touchUpInside" id="U6A-3e-DZP"/>
                                 </connections>
